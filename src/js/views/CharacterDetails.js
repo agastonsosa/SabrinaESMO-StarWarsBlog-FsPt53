@@ -21,8 +21,6 @@ export const CharacterDetails = () => {
         fetchCharacterDetails();
     }, [uid, actions]);
 
-    const character = store.people.find(character => character.uid === uid);
-
     return (
         <div>
             <div className="card-body">
@@ -30,10 +28,10 @@ export const CharacterDetails = () => {
                     <p>Loading...</p>
                 ) : (
                     <>
-                        {character ? (
+                        {store.characterDetails ? (
                             <>
-                                <p className="card-title">{character.name}</p>
-                                <p className="card-text">Hair Color: {character.hair_color}</p>
+                                <p className="card-title">{store.characterDetails.properties.name}</p>
+                                <p className="card-text">Hair Color: {store.characterDetails.properties.hair_color}</p>
                                 {/* Agrega más propiedades del personaje aquí */}
                             </>
                         ) : (

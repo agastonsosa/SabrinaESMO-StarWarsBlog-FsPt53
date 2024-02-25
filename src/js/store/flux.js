@@ -4,7 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             people: [],
             planets: [],
             vehicles: [],
-            characterDetails: [],
+            characterDetails: null,
             planetDetails: [],
             vehicleDetails: [],
         },
@@ -39,22 +39,16 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
 
-            addDetailToCharacters: async (uid) => {
-                try {
-                    const response = await fetch(`https://www.swapi.tech/api/people/${uid}`);
-                    const data = await response.json();
-                    const newCharacters = getStore().people.map(character => {
-                        if (character.uid === uid) {
-                            return Object.assign(character, data.result);
-                        } else {
-                            return character;
-                        }
-                    });
-                    setStore({ people: newCharacters });
-                } catch (error) {
-                    console.error("Error fetching character details:", error);
-                }
-            },
+			addDetailToCharacters: async (uid) => {
+				try {
+					const response = await fetch(`https://www.swapi.tech/api/people/${uid}`);
+					const data = await response.json();
+					const updatedCharacter = data.result;
+					setStore({ characterDetails: updatedCharacter });
+				} catch (error) {
+					console.error("Error fetching character details:", error);
+				}
+			},
 
             addDetailToPlanets: async (uid) => {
                 try {
