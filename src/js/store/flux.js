@@ -13,7 +13,16 @@ const getState = ({ getStore, getActions, setStore }) => {
                 try {
                     const response = await fetch("https://www.swapi.tech/api/people/");
                     const data = await response.json();
-                    setStore({ people: data.results });
+                    
+                    // Obtener los detalles de cada personaje
+                    const charactersWithDetails = await Promise.all(data.results.map(async character => {
+                        const characterResponse = await fetch(`https://www.swapi.tech/api/people/${character.uid}`);
+                        const characterData = await characterResponse.json();
+                        return characterData.result;
+                    }));
+        
+                    // Actualizar el estado con los personajes y sus detalles
+                    setStore({ people: charactersWithDetails });
                 } catch (error) {
                     console.error("Error fetching characters:", error);
                 }
